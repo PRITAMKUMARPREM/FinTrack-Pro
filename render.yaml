@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: fintrack-pro
+    env: node
+    plan: free
+    buildCommand: "npm install"
+    startCommand: "node server.js"
+    envVars:
+      - key: NODE_VERSION
+        value: 18.20.1
+      - key: MONGODB_URI
+        value: "mongodb+srv://PLACEHOLDER_CONNECTION_STRING_HERE"
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CLIENT_ID
+        value: "YOUR_GOOGLE_CLIENT_ID"
+      - key: CLIENT_SECRET
+        value: "YOUR_GOOGLE_CLIENT_SECRET"
+      - key: REDIRECT_URI
+        value: "https://fintrack-pro.onrender.com/auth/google/callback"
