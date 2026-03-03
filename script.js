@@ -1,4 +1,4 @@
-const API = "http://localhost:5050/api/expenses";
+const API = "https://fintrack-pro-lw7f.onrender.com/api/expenses";
 
 let expenseChartInstance = null;
 let netWorthChartInstance = null;
@@ -543,7 +543,7 @@ function exportData(type) {
 // Goals API
 async function fetchGoals() {
     try {
-        const res = await fetch("http://localhost:5050/api/goals", { headers: getAuthHeaders() });
+        const res = await fetch(`${API_BASE_URL}/api/goals`, { headers: getAuthHeaders() });
         if (!res.ok) return;
         const goals = await res.json();
 
@@ -595,7 +595,7 @@ async function fetchGoals() {
 
 async function fetchSubscriptions() {
     try {
-        const res = await fetch("http://localhost:5050/api/subscriptions", { headers: getAuthHeaders() });
+        const res = await fetch(`${API_BASE_URL}/api/subscriptions`, { headers: getAuthHeaders() });
         if (!res.ok) throw new Error("Offline");
         const subs = await res.json();
 
@@ -658,7 +658,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const body = isLoginMode ? { email, password } : { name, email, password };
 
             try {
-                const res = await fetch(`http://localhost:5050/api/auth${endpoint}`, {
+                const res = await fetch(`https://fintrack-pro-lw7f.onrender.com/api/auth${endpoint}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(body)
@@ -690,7 +690,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const targetDate = document.getElementById('goalDate').value;
 
             try {
-                const res = await fetch('http://localhost:5050/api/goals', {
+                const res = await fetch('https://fintrack-pro-lw7f.onrender.com/api/goals', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
                     body: JSON.stringify({ title, targetAmount, targetDate })
@@ -805,7 +805,7 @@ function connectGmail() {
         didOpen: () => {
             Swal.showLoading();
             setTimeout(() => {
-                window.location.href = `http://localhost:5050/auth/google?token=${token}`;
+                window.location.href = `https://fintrack-pro-lw7f.onrender.com/auth/google?token=${token}`;
             }, 1000);
         }
     });

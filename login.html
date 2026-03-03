@@ -171,7 +171,7 @@
                 submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating...`;
                 submitBtn.disabled = true;
 
-                const res = await fetch(`http://localhost:5050/api/auth${endpoint}`, {
+                const res = await fetch(`https://fintrack-pro-lw7f.onrender.com/api/auth${endpoint}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(body)
