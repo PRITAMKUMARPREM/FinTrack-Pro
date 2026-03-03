@@ -19,4 +19,4 @@ services:
       - key: CLIENT_SECRET
         value: "YOUR_GOOGLE_CLIENT_SECRET"
       - key: REDIRECT_URI
-        value: "https://fintrack-pro.onrender.com/auth/google/callback"
+        value: "https://fintrack-pro-lw7f.onrender.com/auth/google/callback"
