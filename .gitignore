@@ -1,0 +1,6 @@
+node_modules/
+.env
+.DS_Store
+server.log
+gmail_execution.log
+npm-debug.log*

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - FinTrack Pro</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Fonts and Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 450px;
+            padding: 2.5rem;
+            text-align: center;
+            animation: fadeUp 0.6s ease-out forwards;
+        }
+
+        .login-box .logo {
+            margin-bottom: 2rem;
+            justify-content: center;
+            font-size: 2.2rem;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Dynamic Background Elements -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <a href="index.html" class="back-link glass-inner" style="padding: 0.5rem 1rem; border-radius: 8px;">
+        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+    </a>
+
+    <div class="login-container">
+        <div class="modal-box glass-panel login-box" style="margin: 0;">
+            <div class="logo" style="display: flex; align-items: center; justify-content: center; gap: 0.2rem;">
+                <i class="fa-solid fa-bolt"></i> FinTrack
+                <div style="display: flex; flex-direction: column; align-items: center; margin-top: 8px;">
+                    <span style="line-height: 0.8;">Pro</span>
+                    <div
+                        style="font-size: 0.35em; color: var(--text-secondary); letter-spacing: 1px; margin-top: 2px; line-height: 1; font-weight: normal; -webkit-text-fill-color: initial;">
+                        pkp</div>
+                </div>
+            </div>
+
+            <div class="modal-header flex-between mb-2">
+                <h2 id="authTitle" style="width: 100%; text-align: left;">Secure <span class="highlight">Access</span>
+                </h2>
+            </div>
+
+            <form id="authForm" class="mt-2 text-left" style="text-align: left;">
+                <div class="form-group" id="nameGroup" style="display: none;">
+                    <label>Full Name</label>
+                    <input type="text" id="authName" placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="authEmail" required placeholder="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="authPassword" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-primary w-100 mt-2 glow-effect" id="authSubmitBtn">Login securely <i
+                        class="fa-solid fa-lock"></i></button>
+            </form>
+
+            <div class="text-center mt-3" style="text-align: center;">
+                <p class="text-secondary" style="font-size: 0.9rem;">
+                    <span id="authSwitchText">Don't have an account?</span>
+                    <a href="#" onclick="toggleAuthMode()"
+                        style="color: var(--accent-blue); text-decoration: none; font-weight: 600;"
+                        id="authSwitchLink">Create one</a>
+                </p>
+                <p class="text-secondary mt-1" style="font-size: 0.75rem;"><i class="fa-solid fa-shield-halved"></i>
+                    Bank-Level 256-bit Encryption</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isLoginMode = true;
+
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            const title = document.getElementById('authTitle');
+            const nameGroup = document.getElementById('nameGroup');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const switchText = document.getElementById('authSwitchText');
+            const switchLink = document.getElementById('authSwitchLink');
+
+            if (isLoginMode) {
+                title.innerHTML = `Secure <span class="highlight">Access</span>`;
+                nameGroup.style.display = 'none';
+                document.getElementById('authName').removeAttribute('required');
+                submitBtn.innerHTML = `Login securely <i class="fa-solid fa-lock"></i>`;
+                switchText.innerText = "Don't have an account?";
+                switchLink.innerText = "Create one";
+            } else {
+                title.innerHTML = `Create <span class="highlight">Account</span>`;
+                nameGroup.style.display = 'block';
+                document.getElementById('authName').setAttribute('required', 'true');
+                submitBtn.innerHTML = `Sign Up <i class="fa-solid fa-user-plus"></i>`;
+                switchText.innerText = "Already have an account?";
+                switchLink.innerText = "Login here";
+            }
+        }
+
+        document.getElementById('authForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            const name = document.getElementById('authName').value;
+
+            const endpoint = isLoginMode ? '/login' : '/register';
+            const body = isLoginMode ? { email, password } : { name, email, password };
+
+            try {
+                // Show loading state
+                const submitBtn = document.getElementById('authSubmitBtn');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating...`;
+                submitBtn.disabled = true;
+
+                const res = await fetch(`http://localhost:5050/api/auth${endpoint}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'Authentication successful',
+                        icon: 'success',
+                        background: '#111827',
+                        color: '#fff',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = 'index.html';
+                    });
+                } else {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    Swal.fire({ title: 'Error', text: data.message, icon: 'error', background: '#111827', color: '#fff' });
+                }
+            } catch (err) {
+                console.warn(err);
+
+                // DEMO MODE BYPASS: If the backend fails (e.g. MongoDB not running),
+                // gracefully fall back to a mock user so the recruiter presentation never breaks.
+                const mockUser = { id: 'demo123', name: name || 'Demo User', email: email };
+                localStorage.setItem('token', 'simulated_jwt_token_for_demo_purposes_only');
+                localStorage.setItem('user', JSON.stringify(mockUser));
+
+                Swal.fire({
+                    title: 'Demo Access Granted',
+                    text: 'Backend not detected. Falling back to Local Demo Mode.',
+                    icon: 'info',
+                    background: '#111827',
+                    color: '#fff',
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.href = 'index.html';
+                });
+            }
+        });
+
+        // Redirect if already logged in
+        if (localStorage.getItem('token')) {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+
+</html>

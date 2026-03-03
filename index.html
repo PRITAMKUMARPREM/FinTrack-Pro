@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinTrack Pro - Complete SaaS</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Fonts and Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+    <!-- Dynamic Background Elements -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <div class="saas-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar glass-panel">
+            <div class="logo" style="display: flex; align-items: center; justify-content: center; gap: 0.2rem;">
+                <i class="fa-solid fa-bolt"></i> FinTrack
+                <div style="display: flex; flex-direction: column; align-items: center; margin-top: 8px;">
+                    <span style="line-height: 0.8;">Pro</span>
+                    <div
+                        style="font-size: 0.35em; color: var(--text-secondary); letter-spacing: 1px; margin-top: 2px; line-height: 1; font-weight: normal; -webkit-text-fill-color: initial;">
+                        pkp</div>
+                </div>
+            </div>
+
+            <nav class="side-nav">
+                <a href="#" class="nav-item active" onclick="switchTab('overview')">
+                    <i class="fa-solid fa-border-all"></i> Overview
+                </a>
+                <a href="#" class="nav-item" onclick="switchTab('analytics')">
+                    <i class="fa-solid fa-chart-line"></i> Deep Analytics
+                </a>
+                <a href="#" class="nav-item" onclick="switchTab('goals')">
+                    <i class="fa-solid fa-bullseye"></i> Budgets & Goals
+                </a>
+                <a href="#" class="nav-item" onclick="switchTab('subscriptions')">
+                    <i class="fa-solid fa-repeat"></i> Subscriptions
+                </a>
+                <a href="#" class="nav-item" onclick="switchTab('investments')">
+                    <i class="fa-solid fa-piggy-bank text-success"></i> Smart Investments
+                </a>
+                <a href="#" class="nav-item" onclick="switchTab('loans')">
+                    <i class="fa-solid fa-building-columns text-warning"></i> Loans & EMI
+                </a>
+                <a href="#" class="nav-item" onclick="switchTab('forensics')">
+                    <i class="fa-solid fa-microchip highlight"></i> AI Forensics
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <button class="btn-primary w-100 glow-effect" onclick="connectGmail()">
+                    <i class="fa-brands fa-google"></i> Gmail Sync
+                </button>
+                <div class="user-profile mt-3" id="profileBadge" onclick="window.location.href='login.html'">
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                    <div class="user-info">
+                        <span class="user-name">Guest User</span>
+                        <span class="auth-btn highlight" style="font-weight: 600;">Sign In / Register <i
+                                class="fa-solid fa-arrow-right" style="font-size: 0.7rem; margin-left: 2px;"></i></span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="dashboard-workspace">
+
+            <!-- HEADER -->
+            <header class="workspace-header">
+                <div class="hero-text">
+                    <h1 id="welcomeTitle">Welcome back, <span class="highlight">Innovator</span></h1>
+                    <p>Your comprehensive financial command center.</p>
+
+                    <!-- NEW: Life Progress Tracker for Gamification -->
+                    <div class="life-progress-bar mt-2"
+                        style="width: 300px; display: flex; flex-direction: column; gap: 5px;"
+                        title="Based on Asset-to-Debt Ratio & Savings Rate">
+                        <div class="flex-between" style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <span><i class="fa-solid fa-ranking-star text-warning"></i> Life Progress / F.I.R.E</span>
+                            <span class="text-success" style="font-weight: bold;">Level 12 (42%)</span>
+                        </div>
+                        <div
+                            style="width: 100%; height: 6px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; position: relative;">
+                            <div
+                                style="position: absolute; width: 42%; height: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--success)); border-radius: 4px; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-outline export-btn" onclick="exportData('pdf')">
+                        <i class="fa-solid fa-file-pdf"></i> Export PDF
+                    </button>
+                    <button class="btn-outline export-btn" onclick="exportData('excel')">
+                        <i class="fa-solid fa-file-excel"></i> Export Excel
+                    </button>
+                </div>
+            </header>
+
+            <!-- TAB: OVERVIEW -->
+            <div id="tab-overview" class="tab-content active">
+
+                <!-- Premium Overview Cards -->
+                <section class="overview-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+                    <!-- 3D Interactive Smart Card -->
+                    <div class="credit-card-3d" id="smartCard">
+                        <div class="card-inner glass-panel"
+                            style="background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0)); border: 1px solid rgba(255,255,255,0.2);">
+                            <div class="card-front"
+                                style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                                <div class="flex-between">
+                                    <i class="fa-brands fa-cc-visa" style="font-size: 2rem; color: #fff;"></i>
+                                    <i class="fa-solid fa-wifi"
+                                        style="transform: rotate(90deg); color: rgba(255,255,255,0.6);"></i>
+                                </div>
+                                <div class="mt-3">
+                                    <p style="font-size: 0.75rem; letter-spacing: 2px; color: rgba(255,255,255,0.6);">
+                                        LIQUID BALANCE</p>
+                                    <h2 id="cardBalance" style="letter-spacing: 2px; margin-top: 5px;">₹0.00</h2>
+                                </div>
+                                <div class="flex-between mt-3" style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">
+                                    <span id="accountNumberDisplay">**** **** **** 4092</span>
+                                    <span>12/28</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card glass-panel income">
+                        <div class="icon-wrapper"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                        <div class="card-content">
+                            <h3>Total Income</h3>
+                            <p id="income" class="amount">₹0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card glass-panel expense">
+                        <div class="icon-wrapper"><i class="fa-solid fa-arrow-trend-down"></i></div>
+                        <div class="card-content">
+                            <h3>Total Expense</h3>
+                            <p id="expense" class="amount">₹0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card glass-panel burn-rate">
+                        <div class="icon-wrapper"><i class="fa-solid fa-fire"></i></div>
+                        <div class="card-content">
+                            <h3>Runway (Burn Rate)</h3>
+                            <p id="burnRate" class="amount text-warning">-- days</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Bento Grid Content -->
+                <section class="main-content">
+
+                    <!-- Analytics & Heatmap -->
+                    <div class="bento-box glass-panel chart-section">
+                        <div class="bento-header flex-between">
+                            <h2><i class="fa-solid fa-chart-pie"></i> Spending Analysis</h2>
+                            <select id="chartTypeSelect" onchange="updateChartType()" class="small-select">
+                                <option value="doughnut">Category (Pie)</option>
+                                <option value="line">Trend (Line)</option>
+                            </select>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="expenseChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Net Worth Trend Graph -->
+                    <div class="bento-box glass-panel networth-section">
+                        <div class="bento-header">
+                            <h2><i class="fa-solid fa-chart-area"></i> Net Worth Tracker</h2>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="netWorthChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- AI Insights & Health Score -->
+                    <div class="bento-box glass-panel ai-insights">
+                        <div class="bento-header">
+                            <h2><i class="fa-solid fa-heart-pulse highlight"></i> FinHealth Score</h2>
+                        </div>
+
+                        <div class="health-score-container">
+                            <div class="score-ring">
+                                <h1 id="healthScore">85</h1><span>/ 100</span>
+                            </div>
+                            <p class="score-status text-success">Excellent Condition</p>
+                        </div>
+
+                        <div class="insight-card glass-inner alert-box mt-2" id="alertBox">
+                            <h4><i class="fa-solid fa-shield-halved"></i> Anomaly Detection Engine</h4>
+                            <p id="alert" class="alert-text">No unusual spending detected today.</p>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Row: Record & Recent -->
+                    <div class="bento-box glass-panel add-expense" style="grid-column: span 2;">
+                        <div class="bento-header flex-between">
+                            <h2><i class="fa-solid fa-plus-circle"></i> Rapid Record</h2>
+                            <button type="button" class="btn-outline glow-effect" id="voiceBtn"
+                                onclick="startVoiceRecord()"
+                                style="padding: 0.4rem 0.8rem; border-radius: 20px; border-color: var(--purple); color: var(--purple); font-size: 0.85rem;">
+                                <i class="fa-solid fa-microphone"></i> Voice AI
+                            </button>
+                        </div>
+                        <form id="expenseForm">
+                            <div class="form-row">
+                                <div class="form-group w-50">
+                                    <label>Amount (₹)</label>
+                                    <input type="number" id="txAmount" required placeholder="500">
+                                </div>
+                                <div class="form-group w-50">
+                                    <label>Title</label>
+                                    <input type="text" id="txTitle" required placeholder="e.g. Amazon">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Type & Category</label>
+                                    <div class="select-row-wrapper">
+                                        <select id="txType">
+                                            <option value="expense">Expense</option>
+                                            <option value="income">Income</option>
+                                        </select>
+                                        <select id="txCategory">
+                                            <option value="Food">Food</option>
+                                            <option value="Subscriptions">Subscriptions</option>
+                                            <option value="Utilities">Utilities</option>
+                                            <option value="Shopping">Shopping</option>
+                                            <option value="Salary">Salary</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary w-100 mt-2 glow-effect">
+                                <i class="fa-solid fa-bolt"></i> Add to Ledger
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Recent Transactions list to fill gap -->
+                    <div class="bento-box glass-panel gamification"
+                        style="grid-column: span 1; display: flex; flex-direction: column;">
+                        <div class="bento-header">
+                            <h2><i class="fa-solid fa-list-ul"></i> Recent</h2>
+                        </div>
+                        <div class="goal-list mt-2" id="recentTxContainer"
+                            style="flex: 1; overflow-y: auto; max-height: 250px;">
+                            <div class="text-center text-secondary mt-3"><i class="fa-solid fa-spinner fa-spin"></i>
+                                Loading...</div>
+                        </div>
+                    </div>
+
+                    <!-- Gamification Section -->
+                    <div class="bento-box glass-panel gamification full-width">
+                        <div class="bento-header">
+                            <h2><i class="fa-solid fa-medal text-warning"></i> Achievements</h2>
+                        </div>
+                        <div class="badge-grid mt-2">
+                            <div class="badge-item glass-inner glow-hover" title="Stayed under budget for 3 months">
+                                <i class="fa-solid fa-shield-heart text-success"></i>
+                                <span>Budget Master</span>
+                            </div>
+                            <div class="badge-item glass-inner glow-hover" title="Saved over ₹1 Lakh">
+                                <i class="fa-solid fa-piggy-bank text-info"></i>
+                                <span>Super Saver</span>
+                            </div>
+                            <div class="badge-item glass-inner glow-hover blocked" title="Complete 10 goals to unlock">
+                                <i class="fa-solid fa-lock text-secondary"></i>
+                                <span>Goal Crusher</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- TAB: DEEP ANALYTICS -->
+            <div id="tab-analytics" class="tab-content" style="display: none;">
+                <section class="main-content">
+                    <div class="bento-box glass-panel full-width">
+                        <div class="bento-header flex-between">
+                            <h2><i class="fa-solid fa-chart-line"></i> Category Deep Dive</h2>
+                            <button class="btn-outline" onclick="generateAIReport()">
+                                <i class="fa-solid fa-file-invoice"></i> Generate AI Report
+                            </button>
+                        </div>
+                        <div class="analytics-grid mt-2">
+                            <div class="analytics-card glass-inner">
+                                <h3>Monthly Trend</h3>
+                                <div class="chart-wrapper">
+                                    <canvas id="trendChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="analytics-card glass-inner">
+                                <h3>Professional Summary</h3>
+                                <div id="aiSummaryText" class="text-secondary mt-1">
+                                    Analyzing your data for professional insights...
+                                </div>
+                            </div>
+                            <div class="analytics-card glass-inner"
+                                style="grid-column: span 2; display: flex; flex-direction: column; align-items: center;">
+                                <h3>Financial Stability Score Index</h3>
+                                <p class="text-secondary mb-2" style="font-size: 0.9rem;">Multi-dimensional risk &
+                                    growth analysis</p>
+                                <div class="chart-wrapper" style="max-width: 400px; height: 350px;">
+                                    <canvas id="radarChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- TAB: GOALS & BUDGETS -->
+            <div id="tab-goals" class="tab-content" style="display: none;">
+                <section class="overview-grid">
+                    <div class="bento-box glass-panel full-width">
+                        <div class="bento-header flex-between mb-3">
+                            <div>
+                                <h2><i class="fa-solid fa-bullseye text-success"></i> Intelligent Milestones</h2>
+                                <p class="text-secondary mt-1" style="font-size: 0.9rem;">Track and accelerate your
+                                    financial aspirations</p>
+                            </div>
+                            <button class="btn-primary glow-effect" onclick="toggleGoalForm()" id="newGoalBtn">
+                                <i class="fa-solid fa-plus"></i> New Milestone
+                            </button>
+                        </div>
+
+                        <!-- Inline Goal Form -->
+                        <div id="inlineGoalForm"
+                            style="display: none; padding: 1.5rem; border-left-color: var(--success);"
+                            class="glass-inner rounded mt-2 mb-4">
+                            <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-rocket text-success"></i> Launch New
+                                Milestone</h3>
+                            <form id="goalForm" class="text-left" style="text-align: left;">
+                                <div class="form-row" style="display: flex; gap: 15px;">
+                                    <div class="form-group w-33" style="flex: 1;">
+                                        <label>Milestone Name</label>
+                                        <input type="text" id="goalTitle" required placeholder="e.g. Europe Trip">
+                                    </div>
+                                    <div class="form-group w-33" style="flex: 1;">
+                                        <label>Target Amount (₹)</label>
+                                        <input type="number" id="goalAmount" required placeholder="300000">
+                                    </div>
+                                    <div class="form-group w-33" style="flex: 1;">
+                                        <label>Target Date</label>
+                                        <input type="date" id="goalDate" required>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                    <button type="button" class="btn-outline" onclick="toggleGoalForm()"><i
+                                            class="fa-solid fa-times"></i> Cancel</button>
+                                    <button type="submit" class="btn-primary glow-effect">Initialize Tracker <i
+                                            class="fa-solid fa-rocket"></i></button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="analytics-grid" id="goalsContainer"
+                            style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+
+                            <!-- Static Mockup Goal 1 -->
+                            <div class="glass-inner p-3 goal-card" style="padding: 1.5rem;">
+                                <div class="flex-between mb-2">
+                                    <h3 style="display: flex; align-items: center; gap: 0.5rem;"><i
+                                            class="fa-solid fa-car text-info"></i> Dream Car Fund</h3>
+                                    <span class="badge"
+                                        style="background: rgba(16, 185, 129, 0.2); color: var(--success); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">On
+                                        Track</span>
+                                </div>
+                                <p class="text-secondary" style="font-size: 0.85rem;"><i
+                                        class="fa-regular fa-calendar"></i> Target: Dec 2026</p>
+
+                                <div class="mt-3 mb-2 flex-between" style="font-size: 0.9rem;">
+                                    <span><strong>₹4.5L</strong> saved</span>
+                                    <span class="text-secondary">of ₹12L</span>
+                                </div>
+
+                                <div
+                                    style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                                    <div
+                                        style="width: 37.5%; height: 100%; background: var(--gradient-brand); border-radius: 4px; box-shadow: var(--premium-glow);">
+                                    </div>
+                                </div>
+                                <div class="text-right mt-1" style="font-size: 0.75rem; color: var(--accent-blue);">
+                                    37.5% Completed</div>
+
+                                <div class="mt-3 pt-2"
+                                    style="border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 0.8rem; color: var(--warning);"><i
+                                            class="fa-solid fa-bolt"></i> +₹20k/mo needed</span>
+                                    <button class="btn-outline"
+                                        style="padding: 0.2rem 0.5rem; font-size: 0.8rem; border-color: rgba(255,255,255,0.2);"><i
+                                            class="fa-solid fa-plus"></i> Add</button>
+                                </div>
+                            </div>
+
+                            <!-- Static Mockup Goal 2 -->
+                            <div class="glass-inner p-3 goal-card" style="padding: 1.5rem;">
+                                <div class="flex-between mb-2">
+                                    <h3 style="display: flex; align-items: center; gap: 0.5rem;"><i
+                                            class="fa-solid fa-house-chimney text-warning"></i> House Deposit</h3>
+                                    <span class="badge"
+                                        style="background: rgba(245, 158, 11, 0.2); color: var(--warning); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">Attention</span>
+                                </div>
+                                <p class="text-secondary" style="font-size: 0.85rem;"><i
+                                        class="fa-regular fa-calendar"></i> Target: Jan 2028</p>
+
+                                <div class="mt-3 mb-2 flex-between" style="font-size: 0.9rem;">
+                                    <span><strong>₹8L</strong> saved</span>
+                                    <span class="text-secondary">of ₹40L</span>
+                                </div>
+
+                                <div
+                                    style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                                    <div
+                                        style="width: 20%; height: 100%; background: linear-gradient(90deg, var(--warning), #ea580c); border-radius: 4px;">
+                                    </div>
+                                </div>
+                                <div class="text-right mt-1" style="font-size: 0.75rem; color: var(--warning);">20.0%
+                                    Completed</div>
+
+                                <div class="mt-3 pt-2"
+                                    style="border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 0.8rem; color: var(--danger);"><i
+                                            class="fa-solid fa-triangle-exclamation"></i> Falling behind</span>
+                                    <button class="btn-outline"
+                                        style="padding: 0.2rem 0.5rem; font-size: 0.8rem; border-color: rgba(255,255,255,0.2);"><i
+                                            class="fa-solid fa-plus"></i> Add</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- TAB: SUBSCRIPTIONS -->
+            <div id="tab-subscriptions" class="tab-content" style="display: none;">
+                <section class="overview-grid">
+                    <div class="bento-box glass-panel full-width">
+                        <div class="bento-header flex-between mb-3">
+                            <div>
+                                <h2><i class="fa-solid fa-repeat text-purple"></i> Smart Subscriptions</h2>
+                                <p class="text-secondary mt-1" style="font-size: 0.9rem;">AI auto-detected recurring
+                                    charges</p>
+                            </div>
+                            <button class="btn-primary glow-effect" onclick="connectGmail()"
+                                style="background: linear-gradient(135deg, #ea4335, #b83226); border: none;">
+                                <i class="fa-brands fa-google"></i> Auto-Sync Gmail
+                            </button>
+                        </div>
+
+                        <!-- AI Insight Banner -->
+                        <div class="insight-card glass-inner alert-box mb-4"
+                            style="border-left-color: var(--accent-indigo);">
+                            <h4><i class="fa-solid fa-brain"></i> AI Forensic Insight</h4>
+                            <p class="text-secondary mt-1">You are spending <strong>₹3,450/month</strong> on
+                                subscriptions. You haven't used <em>Disney+ Hotstar</em> in 42 days. Consider canceling
+                                to save ₹899.</p>
+                        </div>
+
+                        <div class="analytics-grid" id="subsContainer"
+                            style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+
+                            <!-- Static Mockup 1 -->
+                            <div class="glass-inner p-3 subs-card"
+                                style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem; position: relative; overflow: hidden;">
+                                <div
+                                    style="width: 50px; height: 50px; border-radius: 12px; background: #E50914; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; flex-shrink: 0;">
+                                    <i class="fa-solid fa-n"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <h4 style="margin-bottom: 0.2rem;">Netflix Premium</h4>
+                                    <p class="text-secondary" style="font-size: 0.85rem;">Billed Monthly • Renews in 4
+                                        days</p>
+                                </div>
+                                <div class="text-right">
+                                    <h3 class="text-danger">-₹649</h3>
+                                    <button class="btn-outline mt-1"
+                                        style="padding: 0.2rem 0.6rem; font-size: 0.75rem; border-color: var(--border-color); color: var(--text-secondary);">Cancel</button>
+                                </div>
+                            </div>
+
+                            <!-- Static Mockup 2 -->
+                            <div class="glass-inner p-3 subs-card"
+                                style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem; position: relative;">
+                                <div
+                                    style="width: 50px; height: 50px; border-radius: 12px; background: #1DB954; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #000; flex-shrink: 0;">
+                                    <i class="fa-brands fa-spotify"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <h4 style="margin-bottom: 0.2rem;">Spotify Duo</h4>
+                                    <p class="text-secondary" style="font-size: 0.85rem;">Billed Monthly • Renews in 12
+                                        days</p>
+                                </div>
+                                <div class="text-right">
+                                    <h3 class="text-danger">-₹149</h3>
+                                    <button class="btn-outline mt-1"
+                                        style="padding: 0.2rem 0.6rem; font-size: 0.75rem; border-color: var(--border-color); color: var(--text-secondary);">Cancel</button>
+                                </div>
+                            </div>
+
+                            <!-- Static Mockup 3 -->
+                            <div class="glass-inner p-3 subs-card"
+                                style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem; position: relative;">
+                                <div
+                                    style="width: 50px; height: 50px; border-radius: 12px; background: #2563EB; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; flex-shrink: 0;">
+                                    <i class="fa-solid fa-cloud"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <h4 style="margin-bottom: 0.2rem;">Google One</h4>
+                                    <p class="text-secondary" style="font-size: 0.85rem;">Billed Annually • Renews in
+                                        180 days</p>
+                                </div>
+                                <div class="text-right">
+                                    <h3 class="text-danger">-₹1,300</h3>
+                                    <button class="btn-outline mt-1"
+                                        style="padding: 0.2rem 0.6rem; font-size: 0.75rem; border-color: var(--border-color); color: var(--text-secondary);">Cancel</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- TAB: INVESTMENTS -->
+            <div id="tab-investments" class="tab-content" style="display: none;">
+                <section class="overview-grid">
+                    <div class="bento-box glass-panel full-width">
+                        <div class="bento-header flex-between">
+                            <h2><i class="fa-solid fa-chart-pie text-success"></i> Smart Investment Allocation Engine
+                            </h2>
+                            <button class="btn-primary" onclick="allocateInvestments()"><i
+                                    class="fa-solid fa-magic"></i> Auto-Allocate</button>
+                        </div>
+
+                        <div class="analytics-grid mt-2" style="grid-template-columns: 1fr 1fr;">
+                            <div class="analytics-card glass-inner">
+                                <h3>Risk-Based Strategy</h3>
+                                <p class="text-secondary mt-1 mb-2" style="font-size: 0.9rem;">Based on your Financial
+                                    Health Score, Age, and Savings Rate, our AI recommends the following asset
+                                    allocation:</p>
+
+                                <div class="goal-list mt-2">
+                                    <div class="goal-item glass-inner p-2" style="padding: 1rem;">
+                                        <div class="flex-between">
+                                            <strong><i class="fa-solid fa-arrow-trend-up highlight"></i> Equity (High
+                                                Risk)</strong>
+                                            <span class="text-success" id="allocEquity">50%</span>
+                                        </div>
+                                    </div>
+                                    <div class="goal-item glass-inner p-2" style="padding: 1rem;">
+                                        <div class="flex-between">
+                                            <strong><i class="fa-solid fa-building-columns text-secondary"></i> Debt
+                                                (Low Risk)</strong>
+                                            <span class="text-warning" id="allocDebt">30%</span>
+                                        </div>
+                                    </div>
+                                    <div class="goal-item glass-inner p-2" style="padding: 1rem;">
+                                        <div class="flex-between">
+                                            <strong><i class="fa-solid fa-coins" style="color: #fbbf24;"></i> Gold
+                                                (Hedge)</strong>
+                                            <span class="text-secondary" id="allocGold">20%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="analytics-card glass-inner"
+                                style="display: flex; flex-direction: column; align-items: center;">
+                                <h3>Allocation Visualizer</h3>
+                                <div class="chart-wrapper" style="max-width: 300px; height: 300px;">
+                                    <canvas id="investmentChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+
+            <!-- TAB: LOANS & EMI -->
+            <div id="tab-loans" class="tab-content" style="display: none;">
+                <section class="main-content">
+                    <div class="bento-box glass-panel full-width">
+                        <div class="bento-header">
+                            <h2><i class="fa-solid fa-calculator text-warning"></i> Loan & EMI Affordability Checker
+                            </h2>
+                        </div>
+
+                        <div class="analytics-grid mt-2" style="grid-template-columns: 1fr 1fr;">
+                            <!-- Input Form -->
+                            <div class="analytics-card glass-inner">
+                                <h3>Calculate New Loan</h3>
+                                <form id="emiForm" class="mt-2 text-left">
+                                    <div class="form-group">
+                                        <label>Loan Amount (₹)</label>
+                                        <input type="number" id="emiPrincipal" required placeholder="e.g., 500000">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group w-50">
+                                            <label>Interest Rate (% p.a.)</label>
+                                            <input type="number" step="0.1" id="emiRate" required placeholder="10.5">
+                                        </div>
+                                        <div class="form-group w-50">
+                                            <label>Tenure (Years)</label>
+                                            <input type="number" id="emiYears" required placeholder="5">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Processing Fee (%)</label>
+                                        <input type="number" step="0.1" id="emiFee" placeholder="1.0" value="1.0">
+                                    </div>
+                                    <button type="button" onclick="calculateEMI()"
+                                        class="btn-primary w-100 mt-2 glow-effect">
+                                        <i class="fa-solid fa-equals"></i> Calculate Affordability
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- Results Display -->
+                            <div class="analytics-card glass-inner flex-between"
+                                style="flex-direction: column; align-items: flex-start;">
+                                <div style="width: 100%;">
+                                    <h3><i class="fa-solid fa-file-invoice-dollar"></i> Repayment Summary</h3>
+                                    <div class="mt-3 text-center">
+                                        <p class="text-secondary" style="font-size: 0.9rem;">Estimated Monthly EMI</p>
+                                        <h1 id="emiResult" class="highlight" style="font-size: 3rem; margin: 0.5rem 0;">
+                                            ₹0</h1>
+                                    </div>
+
+                                    <div class="goal-list mt-3">
+                                        <div class="goal-item glass-inner p-2 flex-between">
+                                            <span class="text-secondary">Principal Amount:</span>
+                                            <strong id="emiTotalPrincipal">₹0</strong>
+                                        </div>
+                                        <div class="goal-item glass-inner p-2 flex-between">
+                                            <span class="text-secondary">Total Interest:</span>
+                                            <strong class="text-warning" id="emiTotalInterest">₹0</strong>
+                                        </div>
+                                        <div class="goal-item glass-inner p-2 flex-between">
+                                            <span class="text-secondary">Processing Fee:</span>
+                                            <strong class="text-danger" id="emiTotalFee">₹0</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="emiAffordabilityAlert" class="insight-card glass-inner mt-2 w-100"
+                                    style="display: none; border-left: 4px solid var(--accent-blue);">
+                                    <p id="emiAffordabilityText" class="text-primary" style="font-size: 0.95rem;"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- TAB: AI FORENSICS & PROJECTIONS -->
+            <div id="tab-forensics" class="tab-content" style="display: none;">
+                <section class="main-content">
+
+                    <!-- Top Row: Profiling & Stress Test -->
+                    <div class="analytics-grid full-width" style="grid-template-columns: 1fr 1fr;">
+
+                        <!-- Personality Profiling Card -->
+                        <div class="bento-box glass-panel">
+                            <div class="bento-header flex-between">
+                                <h2><i class="fa-solid fa-dna highlight"></i> Behavioral Profile</h2>
+                                <span class="badge-item glass-inner"
+                                    style="padding: 0.3rem 0.8rem; flex-direction: row; gap: 0.5rem; border-color: var(--warning);">
+                                    <i class="fa-solid fa-fire text-warning" style="margin: 0; font-size: 1rem;"></i>
+                                    <span id="aiPersonalityBadge" class="text-warning"
+                                        style="font-size: 0.85rem; font-weight: 700;">Balanced Planner</span>
+                                </span>
+                            </div>
+                            <p class="text-secondary mt-1" style="font-size: 0.95rem; line-height: 1.5;">Our NLP
+                                behavioral engine analyzed your ledger history and classified your spending patterns.
+                            </p>
+
+                            <div class="mt-3">
+                                <div class="flex-between mb-1">
+                                    <span class="text-secondary" style="font-size: 0.85rem;"><i
+                                            class="fa-solid fa-utensils"></i> Impulsive Weekend Spends</span>
+                                    <strong>High (30%)</strong>
+                                </div>
+                                <div class="progress-track mb-2">
+                                    <div class="progress-fill"
+                                        style="width: 30%; background: var(--danger); box-shadow: var(--glow-danger);">
+                                    </div>
+                                </div>
+
+                                <div class="flex-between mb-1">
+                                    <span class="text-secondary" style="font-size: 0.85rem;"><i
+                                            class="fa-solid fa-shield"></i> Savings Consistency</span>
+                                    <strong>Excellent (85%)</strong>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill"
+                                        style="width: 85%; background: var(--success); box-shadow: var(--glow-success);">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="insight-card glass-inner mt-3 w-100"
+                                style="border-left: 4px solid var(--purple);">
+                                <h4><i class="fa-solid fa-brain"></i> AI Verdict</h4>
+                                <p class="text-primary" style="font-size: 0.9rem;">You exhibit strong discipline during
+                                    weekdays but trend towards impulsive entertainment scaling on weekends. Reducing
+                                    weekend burn by 15% will align you with the "Super Saver" tier.</p>
+                            </div>
+                        </div>
+
+                        <!-- Financial Stress Predictor -->
+                        <div class="bento-box glass-panel" style="display: flex; flex-direction: column;">
+                            <div class="bento-header">
+                                <h2><i class="fa-solid fa-bolt text-danger"></i> Burn-Rate Stress Test</h2>
+                            </div>
+                            <div class="text-center" style="margin: auto 0;">
+                                <div class="score-ring"
+                                    style="width: 120px; height: 120px; border-top-color: var(--danger); box-shadow: var(--glow-danger); margin: 0 auto 1.5rem;">
+                                    <i class="fa-solid fa-hourglass-half"
+                                        style="font-size: 2.5rem; color: var(--danger);"></i>
+                                </div>
+                                <h1 id="stressDateForecast" style="font-size: 2.2rem; margin-bottom: 0.5rem;"
+                                    class="highlight text-danger">22 Days</h1>
+                                <p class="text-secondary" style="font-size: 1rem;">Until Extinction Event</p>
+                            </div>
+                            <div class="insight-card glass-inner mt-3">
+                                <p class="text-primary" style="font-size: 0.9rem;"><strong>Algorithmic Warning:</strong>
+                                    At your current localized spending velocity of ₹1,200/day, liquid cash reserves will
+                                    exhaust before your next predicted salary cycle.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Row: What If Scenario Simulator -->
+                    <div class="bento-box glass-panel full-width mt-3">
+                        <div class="bento-header flex-between">
+                            <h2><i class="fa-solid fa-code-branch highlight"></i> What-If Scenario Simulator</h2>
+                            <button class="btn-outline" onclick="runSimulation()"><i
+                                    class="fa-solid fa-play text-success"></i> Run Projection</button>
+                        </div>
+
+                        <div class="analytics-grid" style="grid-template-columns: 1fr 2fr;">
+                            <div class="glass-inner p-3" style="padding: 1.5rem;">
+                                <h3 class="mb-3">Tune Variables</h3>
+                                <form id="scenarioForm" class="mt-2 text-left">
+                                    <div class="form-group">
+                                        <label>Reduce monthly expenses by (%)</label>
+                                        <input type="range" id="simExpenseReduction" min="0" max="50" value="15"
+                                            style="width: 100%; margin-bottom: 0.5rem;">
+                                        <div class="text-right text-secondary" id="simExpenseLabel">15%</div>
+                                    </div>
+                                    <div class="form-group mt-3">
+                                        <label>Increase monthly investments by (₹)</label>
+                                        <input type="range" id="simInvestmentBoost" min="0" max="50000" step="500"
+                                            value="5000" style="width: 100%; margin-bottom: 0.5rem;">
+                                        <div class="text-right text-secondary" id="simInvestLabel">₹5,000</div>
+                                    </div>
+                                </form>
+                                <div class="mt-3">
+                                    <div class="insight-card"
+                                        style="padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 8px;">
+                                        <div class="flex-between">
+                                            <span style="font-size: 0.9rem;">1-Year Net Worth Delta:</span>
+                                            <strong class="text-success" id="simNetDelta"
+                                                style="font-size: 1.1rem;">+₹0</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="chart-wrapper">
+                                <canvas id="scenarioChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Login/Register Modal overlay -->
+    <div id="authModal" class="modal-overlay" style="display: none;">
+        <div class="modal-box glass-panel">
+            <div class="modal-header flex-between">
+                <h2 id="authTitle">Secure <span class="highlight">Access</span></h2>
+                <button onclick="closeModal('authModal')" class="close-btn"><i class="fa-solid fa-times"></i></button>
+            </div>
+
+            <form id="authForm" class="mt-2 text-left" style="text-align: left;">
+                <div class="form-group" id="nameGroup" style="display: none;">
+                    <label>Full Name</label>
+                    <input type="text" id="authName" placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="authEmail" required placeholder="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="authPassword" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-primary w-100 mt-2 glow-effect" id="authSubmitBtn">Login securely <i
+                        class="fa-solid fa-lock"></i></button>
+            </form>
+
+            <div class="text-center mt-3" style="text-align: center;">
+                <p class="text-secondary" style="font-size: 0.9rem;">
+                    <span id="authSwitchText">Don't have an account?</span>
+                    <a href="#" onclick="toggleAuthMode()"
+                        style="color: var(--accent-blue); text-decoration: none; font-weight: 600;"
+                        id="authSwitchLink">Create one</a>
+                </p>
+                <p class="text-secondary mt-1" style="font-size: 0.75rem;"><i class="fa-solid fa-shield-halved"></i>
+                    Bank-Level 256-bit Encryption</p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Ultra-Premium Global AI Assistant Floating Button -->
+    <div class="ai-fab" onclick="toggleChatbot()" title="Summon FinAI Assistant">
+        <i class="fa-solid fa-robot"></i>
+    </div>
+
+    <div class="chatbot-window glass-panel" id="chatbotWindow" style="display: none;">
+        <div class="chatbot-header">
+            <h4><i class="fa-solid fa-sparkles text-info"></i> FinAI Copilot</h4>
+            <button onclick="toggleChatbot()" class="close-btn"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="chat-msg bot-msg">
+                <div class="chat-avatar"><i class="fa-solid fa-robot"></i></div>
+                <div class="chat-text">Welcome to your personal AI Financial Copilot. I analyze your ledger, goals, and
+                    behavior in real-time. How can we optimize your net worth today?</div>
+            </div>
+        </div>
+        <div class="chatbot-input-area">
+            <input type="text" id="chatInput" placeholder="Ask 'How can I save more?'..."
+                onkeypress="handleChatKeyPress(event)">
+            <button onclick="sendChatMessage()" class="btn-primary" style="padding: 0.5rem 1rem; border-radius: 8px;"><i
+                    class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
